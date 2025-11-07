@@ -37,23 +37,63 @@ Le module est **clé en main** : toutes les dépendances (vendor) sont incluses 
 |-----------|-----|--------|
 | 1.7.x | 7.1+ | ✅ Compatible (version officielle) |
 | 8.0.x - 8.2.x | 7.4+ | ✅ Compatible (version officielle) |
-| **9.0.x**  ✅ **Compatible (version patchée)** |
+| **9.0.x**  | 8.4 | ✅ **Compatible (version patchée)** |
 
 
 ## 🔧 Modifications apportées pour PrestaShop 9
 
 ### ✅ Réalisées
 
-- [x] **Fix méthode `l()` - AdminColissimoOrdersController.php**
-  - Ligne 57 : `$this->l()` → `$this->module->l('Delete Labels', 'AdminColissimoOrdersController')`
-  - **Problème** : La méthode `$this->l()` n'existe plus dans `ModuleAdminController` PS9
-  - **Solution** : Utilisation de `$this->module->l()` avec contexte du contrôleur
+#### 1. Fix méthode `$this->l()` (Traductions)
+**Problème** : La méthode `$this->l()` n'existe plus dans `ModuleAdminController` de PrestaShop 9
+**Solution** : Utilisation de `$this->module->l()` avec le contexte du contrôleur
 
-- [x] **Fix méthode `l()` - AdminColissimoAssignOrdersController.php**
-  - Ligne 56 : `$this->l()` → `$this->module->l('Assign to Colissimo with signature', 'AdminColissimoAssignOrdersController')`
-  - Ligne 60 : `$this->l()` → `$this->module->l('Assign Colissimo without Signature', 'AdminColissimoAssignOrdersController')`
+**Fichiers modifiés** :
+- [x] **AdminColissimoOrdersController.php** (ligne 57)
+  - `$this->l('Delete Labels')` → `$this->module->l('Delete Labels', 'AdminColissimoOrdersController')`
 
+- [x] **AdminColissimoAssignOrdersController.php** (lignes 56, 60)
+  - `$this->l('Assign to Colissimo with signature')` → `$this->module->l('Assign to Colissimo with signature', 'AdminColissimoAssignOrdersController')`
+  - `$this->l('Assign Colissimo without Signature')` → `$this->module->l('Assign Colissimo without Signature', 'AdminColissimoAssignOrdersController')`
+
+#### 2. Fix méthode `Tools::getBrightness()` (Calcul de luminosité)
+**Problème** : La méthode statique `Tools::getBrightness()` a été supprimée dans PrestaShop 9
+**Solution** : Création d'une méthode statique `Colissimo::getBrightness()` dans le module principal
+
+**Fichiers modifiés** :
+- [x] **colissimo.php** (lignes 3970-3983)
+  - Ajout de la méthode `public static function getBrightness($hexColor)`
+  - Implémentation du calcul de luminosité selon la formule : `(R*299 + G*587 + B*114) / 1000`
+
+- [x] **AdminColissimoDepositSlipController.php** (ligne 106)
+  - `Tools::getBrightness($orderState->color)` → `Colissimo::getBrightness($orderState->color)`
+
+- [x] **controllers/front/return.php** (ligne 232)
+  - `Tools::getBrightness($orderState->color)` → `Colissimo::getBrightness($orderState->color)`
+
+#### 3. Fix propriété `$context->controller->modals` (Gestion des modales)
+**Problème** : La propriété `modals` du contrôleur n'est pas toujours accessible dans le contexte de PrestaShop 9
+**Solution** : Modification de `setModal()` pour retourner un tableau au lieu d'assigner directement
+
+**Fichiers modifiés** :
+- [x] **colissimo.php** (lignes 982-1004)
+  - `setModal()` retourne maintenant un tableau de modales au lieu d'assigner à `$this->context->controller->modals[]`
+  - Ajout d'un check `isset()` dans `getContent()` (ligne 1013)
+
+- [x] **Tous les contrôleurs admin** (7 fichiers)
+  - AdminColissimoOrdersController.php (ligne 81)
+  - AdminColissimoAssignOrdersController.php (ligne 84)
+  - AdminColissimoDashboardController.php (ligne 76)
+  - AdminColissimoAffranchissementController.php (ligne 84)
+  - AdminColissimoColishipController.php (ligne 68)
+  - AdminColissimoDepositSlipController.php (ligne 79)
+  - AdminColissimoCustomsDocumentsController.php (ligne 61)
+  - Utilisation de `array_merge()` : `$this->modals = array_merge($this->modals, $this->module->setModal())`
+
+#### 4. Tests & Validation
 - [x] **Tests réussis sur PrestaShop 9.0.1 + PHP 8.4**
+- [x] **Validation des contrôleurs admin Colissimo**
+- [x] **Vérification de l'affichage des états de commande avec couleurs**
 
 ### 🔜 En attente / À valider
 
@@ -124,15 +164,28 @@ Les contributions sont les bienvenues !
 ### [2.2.2-ps9] - 2025-11-07
 
 #### ✅ Ajouté
-- Compatibilité PrestaShop 9.0+
-- Tests sur PrestaShop 9.0.1 + PHP 8.4
+- Compatibilité PrestaShop 9.0.1 + PHP 8.4
+- Méthode `Colissimo::getBrightness()` pour remplacer `Tools::getBrightness()`
+- Tests complets sur les contrôleurs admin
 
 #### 🔧 Corrigé
-- Méthode `l()` dans AdminColissimoOrdersController (ligne 57)
-- Méthode `l()` dans AdminColissimoAssignOrdersController (lignes 56, 60)
+- **Traductions** : Méthode `$this->l()` → `$this->module->l()` (2 contrôleurs)
+  - AdminColissimoOrdersController.php (ligne 57)
+  - AdminColissimoAssignOrdersController.php (lignes 56, 60)
+
+- **Luminosité couleurs** : Méthode `Tools::getBrightness()` → `Colissimo::getBrightness()` (3 fichiers)
+  - colissimo.php (ajout de la méthode)
+  - AdminColissimoDepositSlipController.php (ligne 106)
+  - controllers/front/return.php (ligne 232)
+
+- **Modales** : Gestion de la propriété `$context->controller->modals` (9 fichiers)
+  - colissimo.php : `setModal()` retourne un tableau
+  - 7 contrôleurs admin : utilisation de `array_merge()`
+  - Ajout de check `isset()` dans `getContent()`
 
 #### 📝 Modifié
 - Auteur du module : coding974 (coding974.com)
+- README complet avec toutes les modifications détaillées
 
 ---
 
