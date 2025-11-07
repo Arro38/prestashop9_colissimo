@@ -1,0 +1,25 @@
+# Colissimo Module .gitignore
+
+# IDE
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*~
+
+# Logs
+*.log
+
+# Cache
+cache/
+
+# Composer (if used)
+vendor/
+composer.lock
