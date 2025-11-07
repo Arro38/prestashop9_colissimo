@@ -54,7 +54,7 @@ class AdminColissimoOrdersController extends ModuleAdminController
         $this->getColissimoOrderList();
         $this->bulk_actions = [
             'deleteLabels' => [
-                'text' => $this->l('Delete Labels'),
+                'text' => $this->module->l('Delete Labels', 'AdminColissimoOrdersController'),
                 'icon' => 'icon-power-off text-success',
             ],
         ];

@@ -53,11 +53,11 @@ class AdminColissimoAssignOrdersController extends ModuleAdminController {
         $this->getColissimoOrderList();
         $this->bulk_actions = [
             'AssignColissimoSignature' => [
-                'text' => $this->l('Assign to Colissimo with signature'),
+                'text' => $this->module->l('Assign to Colissimo with signature', 'AdminColissimoAssignOrdersController'),
                 'icon' => 'icon-power-off text-success',
             ],
             'AssignColissimoWithoutSignature' => [
-                'text' => $this->l('Assign Colissimo withtout Signature'),
+                'text' => $this->module->l('Assign Colissimo withtout Signature', 'AdminColissimoAssignOrdersController'),
                 'icon' => 'icon-power-off text-success',
             ],
         ];
