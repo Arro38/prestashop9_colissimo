@@ -78,7 +78,7 @@ class AdminColissimoOrdersController extends ModuleAdminController
     public function initModal()
     {
         parent::initModal();
-        $this->modals[] = $this->module->setModal();
+        $this->modals = array_merge($this->modals, $this->module->setModal());
     }
 
     /**

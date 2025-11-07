@@ -975,29 +975,31 @@ class Colissimo extends CarrierModule
     }
 
     /**
-     * @return void
+     * @return array
      * @throws SmartyException
      */
 
     public function setModal()
     {
-        $this->context->controller->modals[] = [
-            'modal_id' => 'colissimo-modal-whatsnew',
-            'modal_class' => 'modal-lg',
-            'modal_title' => '<i class="icon icon-bullhorn"></i> ' . $this->l('What\'s new?'),
-            'modal_content' => $this->context->smarty->fetch($this->local_path . 'views/templates/admin/whatsnew/whatsnew.tpl'),
-        ];
-        $this->context->controller->modals[] = [
-            'modal_id' => 'colissimo-modal-signature',
-            'modal_class' => 'modal-lg',
-            'modal_title' => '<i class="icon icon-bullhorn"></i> ' . $this->l('Signature GCU'),
-            'modal_content' => $this->context->smarty->fetch($this->local_path . 'views/templates/admin/_partials/modal-signature.tpl'),
-        ];
-        $this->context->controller->modals[] = [
-            'modal_id' => 'colissimo-modal-satisfaction',
-            'modal_class' => 'modal-md',
-            'modal_title' => '<i class="icon icon-bullhorn"></i> ' . $this->l('Satisfaction survey'),
-            'modal_content' => $this->context->smarty->fetch($this->local_path . 'views/templates/admin/_partials/modal-satisfaction.tpl'),
+        return [
+            [
+                'modal_id' => 'colissimo-modal-whatsnew',
+                'modal_class' => 'modal-lg',
+                'modal_title' => '<i class="icon icon-bullhorn"></i> ' . $this->l('What\'s new?'),
+                'modal_content' => $this->context->smarty->fetch($this->local_path . 'views/templates/admin/whatsnew/whatsnew.tpl'),
+            ],
+            [
+                'modal_id' => 'colissimo-modal-signature',
+                'modal_class' => 'modal-lg',
+                'modal_title' => '<i class="icon icon-bullhorn"></i> ' . $this->l('Signature GCU'),
+                'modal_content' => $this->context->smarty->fetch($this->local_path . 'views/templates/admin/_partials/modal-signature.tpl'),
+            ],
+            [
+                'modal_id' => 'colissimo-modal-satisfaction',
+                'modal_class' => 'modal-md',
+                'modal_title' => '<i class="icon icon-bullhorn"></i> ' . $this->l('Satisfaction survey'),
+                'modal_content' => $this->context->smarty->fetch($this->local_path . 'views/templates/admin/_partials/modal-satisfaction.tpl'),
+            ],
         ];
     }
 
@@ -1008,7 +1010,9 @@ class Colissimo extends CarrierModule
      */
     public function getContent()
     {
-        $this->setModal();
+        if (isset($this->context->controller->modals)) {
+            $this->context->controller->modals = array_merge($this->context->controller->modals, $this->setModal());
+        }
         $this->setColissimoHeader();
         $this->moduleConfiguration =
             new ColissimoModuleConfiguration($this->context, $this->local_path, $this->getPathUri(), $this->version, $this);
