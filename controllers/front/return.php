@@ -229,7 +229,7 @@ class ColissimoReturnModuleFrontController extends ModuleFrontController
                     'date' => Tools::displayDate($order->date_add, null, false),
                     'status' => [
                         'name' => $orderState->name,
-                        'contrast' => (Tools::getBrightness($orderState->color) > 128) ? 'dark' : 'bright',
+                        'contrast' => (Colissimo::getBrightness($orderState->color) > 128) ? 'dark' : 'bright',
                         'color' => $orderState->color,
                     ],
                     'label' => [

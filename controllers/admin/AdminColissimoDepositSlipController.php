@@ -103,7 +103,7 @@ class AdminColissimoDepositSlipController extends ModuleAdminController
     {
         foreach ($labels as $key => &$label) {
             $orderState = new OrderState((int) $label['current_state'], $this->context->language->id);
-            $label['state_color'] = Tools::getBrightness($orderState->color) < 128 ? 'white' : '#383838';
+            $label['state_color'] = Colissimo::getBrightness($orderState->color) < 128 ? 'white' : '#383838';
             $label['state_bg'] = $orderState->color;
             $label['state_name'] = $orderState->name;
             $label['url'] = $this->context->link->getAdminLink('AdminOrders', true, [], ['id_order' => (int) $label['id_order'], 'vieworder' => 1]) . '&id_order=' . (int) $label['id_order'] . '&vieworder';

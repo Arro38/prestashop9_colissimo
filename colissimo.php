@@ -3961,4 +3961,24 @@ class Colissimo extends CarrierModule
             ],
         ];
     }
+
+    /**
+     * Calculate brightness of a color (replacement for Tools::getBrightness removed in PS9)
+     * @param string $hexColor Hex color code
+     * @return int Brightness value (0-255)
+     */
+    public static function getBrightness($hexColor)
+    {
+        $hexColor = ltrim($hexColor, '#');
+
+        if (strlen($hexColor) == 3) {
+            $hexColor = $hexColor[0] . $hexColor[0] . $hexColor[1] . $hexColor[1] . $hexColor[2] . $hexColor[2];
+        }
+
+        $r = hexdec(substr($hexColor, 0, 2));
+        $g = hexdec(substr($hexColor, 2, 2));
+        $b = hexdec(substr($hexColor, 4, 2));
+
+        return (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
+    }
 }
