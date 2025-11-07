@@ -108,7 +108,7 @@ class Colissimo extends CarrierModule
         $this->tab = 'shipping_logistics';
         $this->version = '2.2.2';
         $this->module_key = 'cce3f48c72001910b4bbda7b7492b5ba';
-        $this->author = 'Colissimo';
+        $this->author = 'coding974 (coding974.com)';
         $this->need_instance = 0;
         $this->bootstrap = true;
         parent::__construct();
