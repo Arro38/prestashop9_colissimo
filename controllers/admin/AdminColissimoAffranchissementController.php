@@ -314,10 +314,19 @@ class AdminColissimoAffranchissementController extends ModuleAdminController
         // Check colissimo signature
         $date1 = Configuration::get('COLISSIMO_LAST_DISPLAY_SIGNATURE_MODAL');
         $date2 = date('Y-m-d H:i:s');
-        $datetime1 = new DateTime($date1);
-        $datetime2 = new DateTime($date2);
-        $interval = $datetime1->diff($datetime2);
-        if (empty($date1) || ($interval->days * 24 + $interval->h) >= 24) {
+
+        // Fix: Check if date1 is empty before creating DateTime to avoid PHP 8.4 compatibility issues
+        if (empty($date1)) {
+            // If date1 is empty, force check
+            $shouldCheck = true;
+        } else {
+            $datetime1 = new DateTime($date1);
+            $datetime2 = new DateTime($date2);
+            $interval = $datetime1->diff($datetime2);
+            $shouldCheck = ($interval->days * 24 + $interval->h) >= 24;
+        }
+
+        if ($shouldCheck) {
             if (false == $this->module->checkColissimoSignature(ColissimoTools::getCredentials((int)$this->context->shop->id))) {
                 Configuration::updateValue('COLISSIMO_LAST_DISPLAY_SIGNATURE_MODAL', $date2);
                 $this->context->smarty->assign('showSignatureModal', true);

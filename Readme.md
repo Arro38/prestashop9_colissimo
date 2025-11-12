@@ -90,15 +90,27 @@ Le module est **clé en main** : toutes les dépendances (vendor) sont incluses 
   - AdminColissimoCustomsDocumentsController.php (ligne 61)
   - Utilisation de `array_merge()` : `$this->modals = array_merge($this->modals, $this->module->setModal())`
 
-#### 4. Tests & Validation
+#### 4. Fix PHP 8.4 - DateTime avec valeur NULL/vide
+**Problème** : PHP 8.4 est plus strict et refuse de créer un objet `DateTime` avec une valeur NULL ou vide, causant une erreur `DateMalformedStringException`
+**Solution** : Vérification de la valeur avant la création de l'objet DateTime + initialisation correcte
+
+**Fichiers modifiés** :
+- [x] **AdminColissimoAffranchissementController.php** (lignes 314-329)
+  - Ajout d'un check `empty($date1)` avant `new DateTime($date1)`
+  - Évite l'erreur "Failed to parse time string (NULL)"
+
+- [x] **colissimo.php** (ligne 744)
+  - Initialisation de `COLISSIMO_LAST_DISPLAY_SIGNATURE_MODAL` avec une date valide
+  - `date('Y-m-d H:i:s', strtotime('-1 day'))` au lieu de chaîne vide `''`
+
+#### 5. Tests & Validation
 - [x] **Tests réussis sur PrestaShop 9.0.1 + PHP 8.4**
 - [x] **Validation des contrôleurs admin Colissimo**
 - [x] **Vérification de l'affichage des états de commande avec couleurs**
+- [x] **Validation de la génération d'étiquettes (fix DateTime)**
 
 ### 🔜 En attente / À valider
 
-- [ ] **Tests complets sur PrestaShop 9.1+**
-- [ ] **Tests avec PHP 8.4**
 - [ ] **Validation complète de toutes les fonctionnalités Colissimo**
   - [ ] Génération d'étiquettes
   - [ ] Widget points relais
@@ -161,12 +173,13 @@ Les contributions sont les bienvenues !
 
 ## 📝 Changelog
 
-### [2.2.2-ps9] - 2025-11-07
+### [2.2.2-ps9] - 2025-11-12
 
 #### ✅ Ajouté
 - Compatibilité PrestaShop 9.0.1 + PHP 8.4
 - Méthode `Colissimo::getBrightness()` pour remplacer `Tools::getBrightness()`
 - Tests complets sur les contrôleurs admin
+- Validation complète de la génération d'étiquettes
 
 #### 🔧 Corrigé
 - **Traductions** : Méthode `$this->l()` → `$this->module->l()` (2 contrôleurs)
@@ -182,6 +195,10 @@ Les contributions sont les bienvenues !
   - colissimo.php : `setModal()` retourne un tableau
   - 7 contrôleurs admin : utilisation de `array_merge()`
   - Ajout de check `isset()` dans `getContent()`
+
+- **PHP 8.4 DateTime** : Fix erreur `DateMalformedStringException` (2 fichiers)
+  - AdminColissimoAffranchissementController.php : Vérification avant `new DateTime()`
+  - colissimo.php : Initialisation avec date valide au lieu de chaîne vide
 
 #### 📝 Modifié
 - Auteur du module : coding974 (coding974.com)

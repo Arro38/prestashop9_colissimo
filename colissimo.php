@@ -740,7 +740,8 @@ class Colissimo extends CarrierModule
         Configuration::updateValue('COLISSIMO_WIDGET_RELAY_FILTER_MOBILE', '1');
         Configuration::updateValue('COLISSIMO_OSM_RELAY_FILTER', '1');
         Configuration::updateValue('COLISSIMO_OSM_RELAY_FILTER_MOBILE', '1');
-        Configuration::updateValue('COLISSIMO_LAST_DISPLAY_SIGNATURE_MODAL', '');
+        // Fix PHP 8.4 compatibility: Initialize with a valid date instead of empty string
+        Configuration::updateValue('COLISSIMO_LAST_DISPLAY_SIGNATURE_MODAL', date('Y-m-d H:i:s', strtotime('-1 day')));
         $deliveryDateOptions = [
             'cutoff_hours' => [
                 'monday'    => '15:00',
