@@ -78,12 +78,12 @@ class AdminColissimoTestCredentialsController extends ModuleAdminController
             $response = $client->request();
         } catch (Exception $e) {
             $this->module->logger->error($e->getMessage());
-            $this->ajaxDie(json_encode($returnError));
+            die(json_encode($returnError));
         }
         if ($response->token) {
-            $this->ajaxDie(json_encode($returnSuccess));
+            die(json_encode($returnSuccess));
         } else {
-            $this->ajaxDie(json_encode($returnError));
+            die(json_encode($returnError));
         }
     }
 
@@ -150,11 +150,11 @@ class AdminColissimoTestCredentialsController extends ModuleAdminController
             $response = $client->request();
         } catch (Exception $e) {
             $this->module->logger->error($e->getMessage());
-            $this->ajaxDie(json_encode($returnError));
+            die(json_encode($returnError));
         }
         if ($response->messages[0]['id'] != 0) {
-            $this->ajaxDie(json_encode($returnError));
+            die(json_encode($returnError));
         }
-        $this->ajaxDie(json_encode($returnSuccess));
+        die(json_encode($returnSuccess));
     }
 }

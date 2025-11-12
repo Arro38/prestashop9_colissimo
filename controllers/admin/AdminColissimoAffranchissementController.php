@@ -1007,7 +1007,7 @@ class AdminColissimoAffranchissementController extends ModuleAdminController
         $return = [
             'result_html' => $html,
         ];
-        $this->ajaxDie(json_encode($return));
+        die(json_encode($return));
         die();
     }
 
@@ -1020,7 +1020,7 @@ class AdminColissimoAffranchissementController extends ModuleAdminController
         $nbColumn = Tools::getValue('nb_col');
         $step = Tools::getValue('step');
         $html = $this->getOrderDetailsHtml((int)$idColissimoOrder, $nbColumn, $step);
-        $this->ajaxDie(
+        die(
             json_encode(
                 [
                     'text' => 'ok',
@@ -1039,7 +1039,7 @@ class AdminColissimoAffranchissementController extends ModuleAdminController
         $idColissimoOrder = Tools::getValue('id_colissimo_order');
         $nbColumn = Tools::getValue('nb_col');
         $html = $this->getAddressFormHtml((int)$idColissimoOrder, $nbColumn);
-        $this->ajaxDie(
+        die(
             json_encode(
                 [
                     'text' => 'ok',
@@ -1076,7 +1076,7 @@ class AdminColissimoAffranchissementController extends ModuleAdminController
                 'error' => true,
                 'message' => $e->getMessage(),
             ];
-            $this->ajaxDie(json_encode($return));
+            die(json_encode($return));
         }
         $data = [
             'delivery_addr' => $address,
@@ -1093,7 +1093,7 @@ class AdminColissimoAffranchissementController extends ModuleAdminController
             'message' => $this->module->l('Address saved successfully.', 'AdminColissimoAffranchissementController'),
             'html' => $html,
         ];
-        $this->ajaxDie(json_encode($return));
+        die(json_encode($return));
     }
 
     /**
@@ -1119,7 +1119,7 @@ class AdminColissimoAffranchissementController extends ModuleAdminController
             'error' => false,
             'weight' => $totalWeight,
         ];
-        $this->ajaxDie(json_encode($return));
+        die(json_encode($return));
     }
 
     /**
@@ -1156,7 +1156,7 @@ class AdminColissimoAffranchissementController extends ModuleAdminController
                 'products' => $orderDetails,
                 'result_html' => $html,
             ];
-            $this->ajaxDie(json_encode($return));
+            die(json_encode($return));
             die();
         }
         /** @var Order $order */
@@ -1285,7 +1285,7 @@ class AdminColissimoAffranchissementController extends ModuleAdminController
         $html = $this->createTemplate('_partials/td-affranchissement-result.tpl')
             ->fetch();
         $return['result_html'] = $html;
-        $this->ajaxDie(json_encode($return));
+        die(json_encode($return));
     }
 
     /**
@@ -1326,7 +1326,7 @@ class AdminColissimoAffranchissementController extends ModuleAdminController
             'result_html' => $html,
             'labels_ids' => isset($summary['label']) ? json_encode($summary['label']) : [],
         ];
-        $this->ajaxDie(json_encode($return));
+        die(json_encode($return));
     }
 
     /**
@@ -1343,7 +1343,7 @@ class AdminColissimoAffranchissementController extends ModuleAdminController
             $filesToDelete = $this->getFilesToDelete($docsLifetime);
             if (!$filesToDelete['total']) {
                 // @formatter:off
-                $this->ajaxDie(json_encode([
+                die(json_encode([
                     'error' => false,
                     'message' => $this->module->l('There are no documents to delete.', 'AdminColissimoAffranchissementController'),
                 ]));
@@ -1383,7 +1383,7 @@ class AdminColissimoAffranchissementController extends ModuleAdminController
                 'message' => $this->module->l('No files were deleted. Please check the module logs.', 'AdminColissimoAffranchissementController'),
             ];
             // @formatter:on
-            $this->ajaxDie(json_encode($return));
+            die(json_encode($return));
         }
 
         $return = [
@@ -1393,7 +1393,7 @@ class AdminColissimoAffranchissementController extends ModuleAdminController
                 $deleted
             ),
         ];
-        $this->ajaxDie(json_encode($return));
+        die(json_encode($return));
     }
 
     /**
@@ -1477,7 +1477,7 @@ class AdminColissimoAffranchissementController extends ModuleAdminController
                 $return = [
                     'result_html' => $html,
                 ];
-                $this->ajaxDie(json_encode($return));
+                die(json_encode($return));
                 die();
             }
         }
@@ -1491,7 +1491,7 @@ class AdminColissimoAffranchissementController extends ModuleAdminController
         $return = [
             'result_html' => $html,
         ];
-        $this->ajaxDie(json_encode($return));
+        die(json_encode($return));
         die();
     }
 
@@ -1527,7 +1527,7 @@ class AdminColissimoAffranchissementController extends ModuleAdminController
             'result_html' => $this->createTemplate('_partials/modal-service-selection.tpl')
                 ->fetch(),
         ];
-        $this->ajaxDie(json_encode($return));
+        die(json_encode($return));
     }
 
     /**
@@ -1554,7 +1554,7 @@ class AdminColissimoAffranchissementController extends ModuleAdminController
                 'front/_partials/pickup-point-address.tpl'
             );
             $html = $this->context->smarty->fetch($tpl);
-            $this->ajaxDie(json_encode(['html_result' => $html]));
+            die(json_encode(['html_result' => $html]));
         }
         $this->context->smarty->assign(
             [
@@ -1576,7 +1576,7 @@ class AdminColissimoAffranchissementController extends ModuleAdminController
             'result_html' => $html,
             'error' => false,
         ];
-        $this->ajaxDie(json_encode($return));
+        die(json_encode($return));
     }
 
     /**
@@ -1595,7 +1595,7 @@ class AdminColissimoAffranchissementController extends ModuleAdminController
                 'error' => true,
                 'message' => $e->getMessage(),
             ];
-            $this->ajaxDie(json_encode($return));
+            die(json_encode($return));
         }
         $order = new Order($idOrder);
         $idColissimoOrder = ColissimoOrder::exists($idOrder);
@@ -1644,6 +1644,6 @@ class AdminColissimoAffranchissementController extends ModuleAdminController
             'html_ftd' => $htmlFtd,
             'order' => $data,
         ];
-        $this->ajaxDie(json_encode($return));
+        die(json_encode($return));
     }
 }

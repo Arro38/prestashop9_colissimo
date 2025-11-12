@@ -389,7 +389,7 @@ class AdminColissimoDashboardController extends ModuleAdminController
             'order_resume_content_html' => $content,
         ));
         $html = $this->createTemplate('_partials/td-order-resume.tpl')->fetch();
-        $this->ajaxDie(
+        die(
             json_encode(
                 array(
                     'text' => 'ok',
@@ -489,7 +489,7 @@ class AdminColissimoDashboardController extends ModuleAdminController
                 'errors' => true,
                 'message' => $this->module->l('Cannot update order tracking.', 'AdminColissimoDashboardController'),
             );
-            $this->ajaxDie(json_encode($return));
+            die(json_encode($return));
             die();
         }
         $errors = array();
@@ -521,7 +521,7 @@ class AdminColissimoDashboardController extends ModuleAdminController
             'success' => $success,
             'html' => $html,
         );
-        $this->ajaxDie(json_encode($return));
+        die(json_encode($return));
     }
 
     /**
@@ -537,7 +537,7 @@ class AdminColissimoDashboardController extends ModuleAdminController
                 'errors' => true,
                 'message' => $this->module->l('Cannot load Colissimo Order', 'AdminColissimoDashboardController'),
             );
-            $this->ajaxDie(json_encode($return));
+            die(json_encode($return));
         }
         if (Tools::getValue('channel')) {
             $this->module->logger->setChannel(Tools::getValue('channel'));
@@ -550,13 +550,13 @@ class AdminColissimoDashboardController extends ModuleAdminController
                 'errors' => true,
                 'message' => $this->module->l('Cannot update Colissimo Order', 'AdminColissimoDashboardController'),
             );
-            $this->ajaxDie(json_encode($return));
+            die(json_encode($return));
         }
         $return = array(
             'errors' => false,
             'message' => $this->module->l('Successful update', 'AdminColissimoDashboardController'),
         );
-        $this->ajaxDie(json_encode($return));
+        die(json_encode($return));
     }
 
     /**
@@ -584,7 +584,7 @@ class AdminColissimoDashboardController extends ModuleAdminController
             $successLabels++;
         }
         Configuration::updateValue('COLISSIMO_LAST_TRACKING_UPDATE', date('Y-m-d H:i:s'));
-        $this->ajaxDie(
+        die(
             json_encode(
                 [
                     'total_labels' => $totalLabels,

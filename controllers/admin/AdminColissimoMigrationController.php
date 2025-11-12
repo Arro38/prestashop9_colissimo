@@ -62,7 +62,7 @@ class AdminColissimoMigrationController extends ModuleAdminController
         $return = [
             'html_result' => $html,
         ];
-        $this->ajaxDie(json_encode($return));
+        die(json_encode($return));
     }
 
     /**
@@ -111,6 +111,6 @@ class AdminColissimoMigrationController extends ModuleAdminController
             );
             $return = ['migrate' => 1, 'html_result' => $html];
         }
-        $this->ajaxDie(json_encode($return));
+        die(json_encode($return));
     }
 }

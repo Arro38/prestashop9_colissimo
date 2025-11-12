@@ -356,7 +356,7 @@ class AdminColissimoLabelController extends ModuleAdminController
                 'message' => $this->module->l('Cannot edit return label for this destination.', 'AdminColissimoLabelController'),
                 'cn23' => false,
             ];
-            $this->ajaxDie(json_encode($return));
+            die(json_encode($return));
         }
         $idService = ColissimoService::getServiceIdByIdCarrierDestinationType(0, $returnDestinationType);
         $productsDetail = [];
@@ -396,7 +396,7 @@ class AdminColissimoLabelController extends ModuleAdminController
                 'message' => $e->getMessage(),
                 'cn23' => false,
             ];
-            $this->ajaxDie(json_encode($return));
+            die(json_encode($return));
         }
         $warningMessage = false;
         if (Tools::getValue('send_mail') && Validate::isLoadedObject($colissimoReturnLabel)) {
@@ -432,7 +432,7 @@ class AdminColissimoLabelController extends ModuleAdminController
             'success' => [],
             'html' => $html,
         ];
-        $this->ajaxDie(json_encode($return));
+        die(json_encode($return));
     }
 
     /**
@@ -516,7 +516,7 @@ class AdminColissimoLabelController extends ModuleAdminController
                     'html'    => '',
                 ];
                 // @formatter:on
-                $this->ajaxDie(json_encode($return));
+                die(json_encode($return));
             }
         } else {
             $this->module->logger->warning('Invalid label object.', ['colissimo_label' => $idLabel]);
@@ -525,7 +525,7 @@ class AdminColissimoLabelController extends ModuleAdminController
                 'message' => $this->module->l('Invalid label. Please refresh the page', 'AdminColissimoLabelController'),
                 'html' => '',
             ];
-            $this->ajaxDie(json_encode($return));
+            die(json_encode($return));
         }
         $shipments = $colissimoOrder->getShipments($this->context->language->id);
         $order = new Order((int)$colissimoOrder->id_order);
@@ -545,7 +545,7 @@ class AdminColissimoLabelController extends ModuleAdminController
         }
         $html = $this->context->smarty->fetch($this->module->getLocalPath() . 'views/templates/admin/admin_order/' . $theme . '/_shipments.tpl');
         $return['html'] = $html;
-        $this->ajaxDie(json_encode($return));
+        die(json_encode($return));
     }
 
     /**
@@ -569,20 +569,20 @@ class AdminColissimoLabelController extends ModuleAdminController
                     'error' => true,
                     'message' => $this->module->l('Cannot send return label to customer.', 'AdminColissimoLabelController'),
                 ];
-                $this->ajaxDie(json_encode($return));
+                die(json_encode($return));
             }
         } else {
             $return = [
                 'error' => true,
                 'message' => $this->module->l('Invalid return label.', 'AdminColissimoLabelController'),
             ];
-            $this->ajaxDie(json_encode($return));
+            die(json_encode($return));
         }
         $return = [
             'error' => false,
             'message' => $this->module->l('Mail sent successfully.', 'AdminColissimoLabelController'),
         ];
-        $this->ajaxDie(json_encode($return));
+        die(json_encode($return));
     }
 
     /**
@@ -644,20 +644,20 @@ class AdminColissimoLabelController extends ModuleAdminController
                     'error' => true,
                     'message' => $this->module->l('Cannot concatenate PDF documents.', 'AdminColissimoLabelController'),
                 ];
-                $this->ajaxDie(json_encode($return));
+                die(json_encode($return));
             }
             $return = [
                 'error' => false,
                 'message' => '',
                 'file_string' => $base64,
             ];
-            $this->ajaxDie(json_encode($return));
+            die(json_encode($return));
         } else {
             $return = [
                 'error' => true,
                 'message' => $this->module->l('There are no PDF documents to print.', 'AdminColissimoLabelController'),
             ];
-            $this->ajaxDie(json_encode($return));
+            die(json_encode($return));
         }
     }
 
@@ -679,7 +679,7 @@ class AdminColissimoLabelController extends ModuleAdminController
                     'error' => true,
                     'message' => $this->module->l('There are no thermal labels to print.', 'AdminColissimoLabelController'),
                 ];
-                $this->ajaxDie(json_encode($return));
+                die(json_encode($return));
                 break;
         }
 
@@ -702,14 +702,14 @@ class AdminColissimoLabelController extends ModuleAdminController
                     'request_urls' => $requests,
                     'message' => $this->module->l('Printing done.', 'AdminColissimoLabelController'),
                 ];
-                $this->ajaxDie(json_encode($return));
+                die(json_encode($return));
             }
         } else {
             $return = [
                 'error' => true,
                 'message' => $this->module->l('There are no thermal labels to print.', 'AdminColissimoLabelController'),
             ];
-            $this->ajaxDie(json_encode($return));
+            die(json_encode($return));
         }
     }
 
@@ -729,6 +729,6 @@ class AdminColissimoLabelController extends ModuleAdminController
             'request_url' => $url,
             'message' => $this->module->l('Printing done.', 'AdminColissimoLabelController'),
         ];
-        $this->ajaxDie(json_encode($return));
+        die(json_encode($return));
     }
 }

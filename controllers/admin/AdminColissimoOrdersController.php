@@ -348,8 +348,8 @@ class AdminColissimoOrdersController extends ModuleAdminController
                 'id_label' => 0,
                 'id_return_label' => 0,
             ];
-            $this->ajaxDie(json_encode($return));
-            die();
+            // Fix PS9: ajaxDie() no longer exists, use die() directly
+            die(json_encode($return));
         }
         $orderCarrier = ColissimoOrderCarrier::getByIdOrder($order->id);
         if (Validate::isLoadedObject($orderCarrier) && !$orderCarrier->tracking_number) {
@@ -420,7 +420,8 @@ class AdminColissimoOrdersController extends ModuleAdminController
                 }
             }
         }
-        $this->ajaxDie(json_encode($return));
+        // Fix PS9: ajaxDie() no longer exists, use die() directly
+        die(json_encode($return));
     }
 
     /**
@@ -456,7 +457,8 @@ class AdminColissimoOrdersController extends ModuleAdminController
             'result_html' => $html,
             'labels_ids' => isset($summary['label']) ? json_encode($summary['label']) : [],
         ];
-        $this->ajaxDie(json_encode($return));
+        // Fix PS9: ajaxDie() no longer exists, use die() directly
+        die(json_encode($return));
     }
 
     /**

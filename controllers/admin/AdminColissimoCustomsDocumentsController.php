@@ -381,7 +381,7 @@ class AdminColissimoCustomsDocumentsController extends ModuleAdminController
             ]
         );
         $html = $this->createTemplate('_partials/td-order-resume.tpl')->fetch();
-        $this->ajaxDie(
+        die(
             json_encode(
                 [
                     'text' => 'ok',

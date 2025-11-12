@@ -510,7 +510,7 @@ class AdminColissimoDepositSlipController extends ModuleAdminController
                 'result_html' => $this->module->displayError($e->getMessage()),
                 'depositSlipId' => 0,
             );
-            $this->ajaxDie(json_encode($return));
+            die(json_encode($return));
         }
         $data = array('id_colissimo_deposit_slip' => (int) $idDepositSlip);
         $where = 'id_colissimo_label IN (' . implode(',', array_map('intval', $labelIds)) . ')';
@@ -547,7 +547,7 @@ class AdminColissimoDepositSlipController extends ModuleAdminController
             'message' => '',
             'depositSlipId' => $idDepositSlip,
         );
-        $this->ajaxDie(json_encode($return));
+        die(json_encode($return));
     }
 
     /**
@@ -581,6 +581,6 @@ class AdminColissimoDepositSlipController extends ModuleAdminController
             'result_html' => $html,
             'label_ids' => $labelIds,
         );
-        $this->ajaxDie(json_encode($return));
+        die(json_encode($return));
     }
 }
