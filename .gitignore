@@ -16,6 +16,7 @@ Thumbs.db
 
 # Logs
 *.log
+logs/
 
 # Cache
 cache/
@@ -23,3 +24,12 @@ cache/
 # Composer (if used)
 vendor/
 composer.lock
+
+# Generated documents (sensitive data)
+documents/labels/*.pdf
+documents/cn23/*.pdf
+documents/deposit_slip/*.pdf
+documents/coliship/*.pdf
+
+# Shipping data (sensitive)
+shippingNumbers.csv
