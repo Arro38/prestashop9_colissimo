@@ -103,7 +103,21 @@ Le module est **clé en main** : toutes les dépendances (vendor) sont incluses 
   - Initialisation de `COLISSIMO_LAST_DISPLAY_SIGNATURE_MODAL` avec une date valide
   - `date('Y-m-d H:i:s', strtotime('-1 day'))` au lieu de chaîne vide `''`
 
-#### 5. Tests & Validation
+#### 5. Fix méthode `ajaxDie()` (AJAX Controllers)
+**Problème** : La méthode `$this->ajaxDie()` n'existe plus dans PrestaShop 9, causant des erreurs 500 sur les appels AJAX
+**Solution** : Remplacement de tous les appels `$this->ajaxDie()` par `die()` directement
+
+**Fichiers modifiés** (57 remplacements au total) :
+- [x] **AdminColissimoAffranchissementController.php** (19 occurrences)
+- [x] **AdminColissimoCustomsDocumentsController.php** (1 occurrence)
+- [x] **AdminColissimoDashboardController.php** (7 occurrences)
+- [x] **AdminColissimoDepositSlipController.php** (3 occurrences)
+- [x] **AdminColissimoLabelController.php** (16 occurrences)
+- [x] **AdminColissimoMigrationController.php** (2 occurrences)
+- [x] **AdminColissimoOrdersController.php** (3 occurrences)
+- [x] **AdminColissimoTestCredentialsController.php** (6 occurrences)
+
+#### 6. Tests & Validation
 - [x] **Tests réussis sur PrestaShop 9.0.1 + PHP 8.4**
 - [x] **Validation des contrôleurs admin Colissimo**
 - [x] **Vérification de l'affichage des états de commande avec couleurs**
@@ -199,6 +213,10 @@ Les contributions sont les bienvenues !
 - **PHP 8.4 DateTime** : Fix erreur `DateMalformedStringException` (2 fichiers)
   - AdminColissimoAffranchissementController.php : Vérification avant `new DateTime()`
   - colissimo.php : Initialisation avec date valide au lieu de chaîne vide
+
+- **AJAX Controllers** : Méthode `$this->ajaxDie()` → `die()` (57 remplacements dans 8 contrôleurs)
+  - Fix erreurs 500 sur appels AJAX (génération étiquettes, bordereaux, etc.)
+  - AdminColissimoAffranchissementController, AdminColissimoOrdersController, etc.
 
 #### 📝 Modifié
 - Auteur du module : coding974 (coding974.com)
