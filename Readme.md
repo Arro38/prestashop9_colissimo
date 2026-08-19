@@ -4,110 +4,110 @@
 ![Version](https://img.shields.io/badge/version-2.2.2--ps9-green)
 ![PHP](https://img.shields.io/badge/PHP-8.4+-purple)
 
-## 📦 À propos
+## 📦 About
 
-**Version non officielle** du module Colissimo 2.2.2, patché pour être compatible avec **PrestaShop 9.0+**.
+**Unofficial version** of the Colissimo 2.2.2 module, patched for compatibility with **PrestaShop 9.0+**.
 
-- **Basé sur** : Colissimo Official 2.2.2
-- **Auteur du patch** : [coding974](https://coding974.com)
-- **Version** : 2.2.2-ps9
-- **Date** : Novembre 2025
+- **Based on**: Colissimo Official 2.2.2
+- **Patch author**: [coding974](https://coding974.com)
+- **Version**: 2.2.2-ps9
+- **Date**: November 2025
 
 ## ⚠️ Disclaimer
 
-Cette version est une adaptation non officielle. 
+This version is an unofficial adaptation.
 
-**Utilisez ce module à vos propres risques.** Il est fourni "tel quel", sans garantie d'aucune sorte.
+**Use this module at your own risk.** It is provided "as is", without warranty of any kind.
 
 ## 🚀 Installation
 
-### 📥 Téléchargement & Installation
+### 📥 Download & Installation
 
-1. Téléchargez le module (ZIP complet avec vendor inclus)
-2. **PrestaShop Back-Office** → **Modules** → **Module Manager**
-3. Cliquez sur **"Uploader un module"**
-4. Sélectionnez le fichier ZIP
-5. Cliquez sur **"Installer"**
+1. Download the module (full ZIP with vendor included)
+2. **PrestaShop Back Office** → **Modules** → **Module Manager**
+3. Click **"Upload a module"**
+4. Select the ZIP file
+5. Click **"Install"**
 
-Le module est **clé en main** : toutes les dépendances (vendor) sont incluses dans le ZIP.
+The module is **turnkey**: all dependencies (vendor) are included in the ZIP.
 
-### ✅ Compatibilité
+### ✅ Compatibility
 
-| PrestaShop | PHP | Statut |
+| PrestaShop | PHP | Status |
 |-----------|-----|--------|
-| 1.7.x | 7.1+ | ✅ Compatible (version officielle) |
-| 8.0.x - 8.2.x | 7.4+ | ✅ Compatible (version officielle) |
-| **9.0.x**  | 8.4 | ✅ **Compatible (version patchée)** |
+| 1.7.x | 7.1+ | ✅ Compatible (official version) |
+| 8.0.x - 8.2.x | 7.4+ | ✅ Compatible (official version) |
+| **9.0.x**  | 8.4 | ✅ **Compatible (patched version)** |
 
 
-## 🔧 Modifications apportées pour PrestaShop 9
+## 🔧 Changes made for PrestaShop 9
 
-### ✅ Réalisées
+### ✅ Done
 
-#### 1. Fix méthode `$this->l()` (Traductions)
-**Problème** : La méthode `$this->l()` n'existe plus dans `ModuleAdminController` de PrestaShop 9
-**Solution** : Utilisation de `$this->module->l()` avec le contexte du contrôleur
+#### 1. Fix `$this->l()` method (Translations)
+**Problem**: The `$this->l()` method no longer exists in `ModuleAdminController` in PrestaShop 9
+**Solution**: Use `$this->module->l()` with the controller context
 
-**Fichiers modifiés** :
-- [x] **AdminColissimoOrdersController.php** (ligne 57)
+**Modified files**:
+- [x] **AdminColissimoOrdersController.php** (line 57)
   - `$this->l('Delete Labels')` → `$this->module->l('Delete Labels', 'AdminColissimoOrdersController')`
 
-- [x] **AdminColissimoAssignOrdersController.php** (lignes 56, 60)
+- [x] **AdminColissimoAssignOrdersController.php** (lines 56, 60)
   - `$this->l('Assign to Colissimo with signature')` → `$this->module->l('Assign to Colissimo with signature', 'AdminColissimoAssignOrdersController')`
   - `$this->l('Assign Colissimo without Signature')` → `$this->module->l('Assign Colissimo without Signature', 'AdminColissimoAssignOrdersController')`
 
-#### 2. Fix méthode `Tools::getBrightness()` (Calcul de luminosité)
-**Problème** : La méthode statique `Tools::getBrightness()` a été supprimée dans PrestaShop 9
-**Solution** : Création d'une méthode statique `Colissimo::getBrightness()` dans le module principal
+#### 2. Fix `Tools::getBrightness()` method (Brightness calculation)
+**Problem**: The static method `Tools::getBrightness()` was removed in PrestaShop 9
+**Solution**: Added a static `Colissimo::getBrightness()` method in the main module
 
-**Fichiers modifiés** :
-- [x] **colissimo.php** (lignes 3970-3983)
-  - Ajout de la méthode `public static function getBrightness($hexColor)`
-  - Implémentation du calcul de luminosité selon la formule : `(R*299 + G*587 + B*114) / 1000`
+**Modified files**:
+- [x] **colissimo.php** (lines 3970-3983)
+  - Added the `public static function getBrightness($hexColor)` method
+  - Brightness computed with the formula: `(R*299 + G*587 + B*114) / 1000`
 
-- [x] **AdminColissimoDepositSlipController.php** (ligne 106)
+- [x] **AdminColissimoDepositSlipController.php** (line 106)
   - `Tools::getBrightness($orderState->color)` → `Colissimo::getBrightness($orderState->color)`
 
-- [x] **controllers/front/return.php** (ligne 232)
+- [x] **controllers/front/return.php** (line 232)
   - `Tools::getBrightness($orderState->color)` → `Colissimo::getBrightness($orderState->color)`
 
-#### 3. Fix propriété `$context->controller->modals` (Gestion des modales)
-**Problème** : La propriété `modals` du contrôleur n'est pas toujours accessible dans le contexte de PrestaShop 9
-**Solution** : Modification de `setModal()` pour retourner un tableau au lieu d'assigner directement
+#### 3. Fix `$context->controller->modals` property (Modal handling)
+**Problem**: The controller's `modals` property is not always accessible in the PrestaShop 9 context
+**Solution**: Changed `setModal()` to return an array instead of assigning directly
 
-**Fichiers modifiés** :
-- [x] **colissimo.php** (lignes 982-1004)
-  - `setModal()` retourne maintenant un tableau de modales au lieu d'assigner à `$this->context->controller->modals[]`
-  - Ajout d'un check `isset()` dans `getContent()` (ligne 1013)
+**Modified files**:
+- [x] **colissimo.php** (lines 982-1004)
+  - `setModal()` now returns an array of modals instead of assigning to `$this->context->controller->modals[]`
+  - Added an `isset()` check in `getContent()` (line 1013)
 
-- [x] **Tous les contrôleurs admin** (7 fichiers)
-  - AdminColissimoOrdersController.php (ligne 81)
-  - AdminColissimoAssignOrdersController.php (ligne 84)
-  - AdminColissimoDashboardController.php (ligne 76)
-  - AdminColissimoAffranchissementController.php (ligne 84)
-  - AdminColissimoColishipController.php (ligne 68)
-  - AdminColissimoDepositSlipController.php (ligne 79)
-  - AdminColissimoCustomsDocumentsController.php (ligne 61)
-  - Utilisation de `array_merge()` : `$this->modals = array_merge($this->modals, $this->module->setModal())`
+- [x] **All admin controllers** (7 files)
+  - AdminColissimoOrdersController.php (line 81)
+  - AdminColissimoAssignOrdersController.php (line 84)
+  - AdminColissimoDashboardController.php (line 76)
+  - AdminColissimoAffranchissementController.php (line 84)
+  - AdminColissimoColishipController.php (line 68)
+  - AdminColissimoDepositSlipController.php (line 79)
+  - AdminColissimoCustomsDocumentsController.php (line 61)
+  - Using `array_merge()`: `$this->modals = array_merge($this->modals, $this->module->setModal())`
 
-#### 4. Fix PHP 8.4 - DateTime avec valeur NULL/vide
-**Problème** : PHP 8.4 est plus strict et refuse de créer un objet `DateTime` avec une valeur NULL ou vide, causant une erreur `DateMalformedStringException`
-**Solution** : Vérification de la valeur avant la création de l'objet DateTime + initialisation correcte
+#### 4. Fix PHP 8.4 - DateTime with NULL/empty value
+**Problem**: PHP 8.4 is stricter and refuses to build a `DateTime` object from a NULL or empty value, raising a `DateMalformedStringException`
+**Solution**: Check the value before creating the DateTime object + proper initialization
 
-**Fichiers modifiés** :
-- [x] **AdminColissimoAffranchissementController.php** (lignes 314-329)
-  - Ajout d'un check `empty($date1)` avant `new DateTime($date1)`
-  - Évite l'erreur "Failed to parse time string (NULL)"
+**Modified files**:
+- [x] **AdminColissimoAffranchissementController.php** (lines 314-329)
+  - Added an `empty($date1)` check before `new DateTime($date1)`
+  - Avoids the "Failed to parse time string (NULL)" error
 
-- [x] **colissimo.php** (ligne 744)
-  - Initialisation de `COLISSIMO_LAST_DISPLAY_SIGNATURE_MODAL` avec une date valide
-  - `date('Y-m-d H:i:s', strtotime('-1 day'))` au lieu de chaîne vide `''`
+- [x] **colissimo.php** (line 744)
+  - `COLISSIMO_LAST_DISPLAY_SIGNATURE_MODAL` initialized with a valid date
+  - `date('Y-m-d H:i:s', strtotime('-1 day'))` instead of an empty string `''`
 
-#### 5. Fix méthode `ajaxDie()` (AJAX Controllers)
-**Problème** : La méthode `$this->ajaxDie()` n'existe plus dans PrestaShop 9, causant des erreurs 500 sur les appels AJAX
-**Solution** : Remplacement de tous les appels `$this->ajaxDie()` par `die()` directement
+#### 5. Fix `ajaxDie()` method (AJAX controllers)
+**Problem**: The `$this->ajaxDie()` method no longer exists in PrestaShop 9, causing 500 errors on AJAX calls
+**Solution**: Replaced every `$this->ajaxDie()` call with a direct `die()`
 
-**Fichiers modifiés** (57 remplacements au total) :
+**Modified files** (57 replacements in total):
 - [x] **AdminColissimoAffranchissementController.php** (19 occurrences)
 - [x] **AdminColissimoCustomsDocumentsController.php** (1 occurrence)
 - [x] **AdminColissimoDashboardController.php** (7 occurrences)
@@ -117,131 +117,131 @@ Le module est **clé en main** : toutes les dépendances (vendor) sont incluses 
 - [x] **AdminColissimoOrdersController.php** (3 occurrences)
 - [x] **AdminColissimoTestCredentialsController.php** (6 occurrences)
 
-#### 6. Tests & Validation
-- [x] **Tests réussis sur PrestaShop 9.0.1 + PHP 8.4**
-- [x] **Validation des contrôleurs admin Colissimo**
-- [x] **Vérification de l'affichage des états de commande avec couleurs**
-- [x] **Validation de la génération d'étiquettes (fix DateTime)**
+#### 6. Tests & validation
+- [x] **Tests passing on PrestaShop 9.0.1 + PHP 8.4**
+- [x] **Colissimo admin controllers validated**
+- [x] **Order status display with colours verified**
+- [x] **Label generation validated (DateTime fix)**
 
-### 🔜 En attente / À valider
+### 🔜 Pending / to be validated
 
-- [ ] **Validation complète de toutes les fonctionnalités Colissimo**
-  - [ ] Génération d'étiquettes
-  - [ ] Widget points relais
-  - [ ] Bordereau de dépôt
-  - [ ] Suivi des colis
-  - [ ] Retours Colissimo
-  - [ ] Documents douaniers (CN23)
-  - [ ] Multi-colis
-  - [ ] Impression thermique
+- [ ] **Full validation of all Colissimo features**
+  - [ ] Label generation
+  - [ ] Pickup point widget
+  - [ ] Deposit slip
+  - [ ] Parcel tracking
+  - [ ] Colissimo returns
+  - [ ] Customs documents (CN23)
+  - [ ] Multi-parcel
+  - [ ] Thermal printing
 
-## 📋 Fonctionnalités du module
+## 📋 Module features
 
-Le module Colissimo offre les fonctionnalités suivantes (basées sur la version officielle 2.2.2) :
+The Colissimo module provides the following features (based on the official 2.2.2 release):
 
-### ✅ Gestion des commandes
-- Génération d'étiquettes Colissimo
-- Impression d'étiquettes (A4 et thermique)
-- Gestion multi-colis
-- Bordereaux de dépôt
-- Suivi des colis en temps réel
+### ✅ Order management
+- Colissimo label generation
+- Label printing (A4 and thermal)
+- Multi-parcel handling
+- Deposit slips
+- Real-time parcel tracking
 
-### ✅ Points de retrait (PUDO)
-- Widget de sélection de points relais
-- Intégration carte OpenStreetMap
-- Recherche par code postal / ville
+### ✅ Pickup points (PUDO)
+- Pickup point selection widget
+- OpenStreetMap integration
+- Search by postcode / city
 
-### ✅ Retours
-- Étiquettes de retour
-- Gestion des retours clients
+### ✅ Returns
+- Return labels
+- Customer return management
 
 ### ✅ International
-- Documents douaniers (CN23)
+- Customs documents (CN23)
 - Delivery Duty Paid (DDP)
 
-### ✅ Configuration avancée
-- Paramètres par transporteur
-- Gestion des services Colissimo
-- Configuration des adresses d'expédition
+### ✅ Advanced configuration
+- Per-carrier settings
+- Colissimo service management
+- Shipping address configuration
 
-## 🐛 Problèmes connus
+## 🐛 Known issues
 
-Aucun problème majeur identifié avec PrestaShop 9.0.1 à ce jour.
+No major issue identified with PrestaShop 9.0.1 so far.
 
-Si vous rencontrez des bugs, merci de créer une issue sur le dépôt GitHub.
+If you run into a bug, please open an issue on the GitHub repository.
 
 ## 📖 Documentation
 
-- **PDF** : Consultez le fichier `readme.pdf` inclus dans le module
-- **Documentation officielle Colissimo** : [colissimo.entreprise.laposte.fr](https://www.colissimo.entreprise.laposte.fr/)
+- **PDF**: see the `readme.pdf` file included in the module
+- **Official Colissimo documentation**: [colissimo.entreprise.laposte.fr](https://www.colissimo.entreprise.laposte.fr/)
 
-## 🤝 Contribution
+## 🤝 Contributing
 
-Les contributions sont les bienvenues !
+Contributions are welcome!
 
-1. Forkez le projet
-2. Créez une branche pour votre fonctionnalité (`git checkout -b feature/ma-fonctionnalite`)
-3. Committez vos changements (`git commit -m 'feat: Ajout de ma fonctionnalité'`)
-4. Pushez vers la branche (`git push origin feature/ma-fonctionnalite`)
-5. Ouvrez une Pull Request
+1. Fork the project
+2. Create a branch for your feature (`git checkout -b feature/my-feature`)
+3. Commit your changes (`git commit -m 'feat: add my feature'`)
+4. Push the branch (`git push origin feature/my-feature`)
+5. Open a Pull Request
 
 ## 📝 Changelog
 
 ### [2.2.2-ps9] - 2025-11-12
 
-#### ✅ Ajouté
-- Compatibilité PrestaShop 9.0.1 + PHP 8.4
-- Méthode `Colissimo::getBrightness()` pour remplacer `Tools::getBrightness()`
-- Tests complets sur les contrôleurs admin
-- Validation complète de la génération d'étiquettes
+#### ✅ Added
+- PrestaShop 9.0.1 + PHP 8.4 compatibility
+- `Colissimo::getBrightness()` method replacing `Tools::getBrightness()`
+- Full tests on the admin controllers
+- Complete validation of label generation
 
-#### 🔧 Corrigé
-- **Traductions** : Méthode `$this->l()` → `$this->module->l()` (2 contrôleurs)
-  - AdminColissimoOrdersController.php (ligne 57)
-  - AdminColissimoAssignOrdersController.php (lignes 56, 60)
+#### 🔧 Fixed
+- **Translations**: `$this->l()` → `$this->module->l()` (2 controllers)
+  - AdminColissimoOrdersController.php (line 57)
+  - AdminColissimoAssignOrdersController.php (lines 56, 60)
 
-- **Luminosité couleurs** : Méthode `Tools::getBrightness()` → `Colissimo::getBrightness()` (3 fichiers)
-  - colissimo.php (ajout de la méthode)
-  - AdminColissimoDepositSlipController.php (ligne 106)
-  - controllers/front/return.php (ligne 232)
+- **Colour brightness**: `Tools::getBrightness()` → `Colissimo::getBrightness()` (3 files)
+  - colissimo.php (method added)
+  - AdminColissimoDepositSlipController.php (line 106)
+  - controllers/front/return.php (line 232)
 
-- **Modales** : Gestion de la propriété `$context->controller->modals` (9 fichiers)
-  - colissimo.php : `setModal()` retourne un tableau
-  - 7 contrôleurs admin : utilisation de `array_merge()`
-  - Ajout de check `isset()` dans `getContent()`
+- **Modals**: handling of the `$context->controller->modals` property (9 files)
+  - colissimo.php: `setModal()` returns an array
+  - 7 admin controllers: using `array_merge()`
+  - Added `isset()` check in `getContent()`
 
-- **PHP 8.4 DateTime** : Fix erreur `DateMalformedStringException` (2 fichiers)
-  - AdminColissimoAffranchissementController.php : Vérification avant `new DateTime()`
-  - colissimo.php : Initialisation avec date valide au lieu de chaîne vide
+- **PHP 8.4 DateTime**: fixed `DateMalformedStringException` (2 files)
+  - AdminColissimoAffranchissementController.php: check before `new DateTime()`
+  - colissimo.php: initialized with a valid date instead of an empty string
 
-- **AJAX Controllers** : Méthode `$this->ajaxDie()` → `die()` (57 remplacements dans 8 contrôleurs)
-  - Fix erreurs 500 sur appels AJAX (génération étiquettes, bordereaux, etc.)
+- **AJAX controllers**: `$this->ajaxDie()` → `die()` (57 replacements across 8 controllers)
+  - Fixes 500 errors on AJAX calls (label generation, deposit slips, etc.)
   - AdminColissimoAffranchissementController, AdminColissimoOrdersController, etc.
 
-#### 📝 Modifié
-- Auteur du module : coding974 (coding974.com)
-- README complet avec toutes les modifications détaillées
+#### 📝 Changed
+- Module author: coding974 (coding974.com)
+- Full README documenting every change
 
 ---
 
-### [2.2.2] - Version officielle
+### [2.2.2] - Official version
 
-Version stable Colissimo officielle pour PrestaShop 1.7 - 8.2
+Stable official Colissimo release for PrestaShop 1.7 - 8.2
 
-Consultez le fichier `CHANGELOG.md` pour l'historique complet des versions officielles.
+See the `CHANGELOG.md` file for the full history of official versions.
 
-## 🔗 Liens
+## 🔗 Links
 
-- **Auteur du patch PS9** : [coding974.com](https://coding974.com)
-- **Module officiel Colissimo** : [colissimo.entreprise.laposte.fr](https://www.colissimo.entreprise.laposte.fr/)
-- **PrestaShop** : [prestashop.com](https://www.prestashop.com/)
+- **PS9 patch author**: [coding974.com](https://coding974.com)
+- **Official Colissimo module**: [colissimo.entreprise.laposte.fr](https://www.colissimo.entreprise.laposte.fr/)
+- **PrestaShop**: [prestashop.com](https://www.prestashop.com/)
 
-## 📄 Licence
+## 📄 License
 
-Voir le fichier de licence du module officiel Colissimo.
+See the license file of the official Colissimo module.
 
 ---
 
-**⚠️ Important** : Cette version sera obsolète lorsque la version officielle compatible PrestaShop 9 sera publiée par les développeurs de Colissimo.
+**⚠️ Important**: This version will become obsolete once the official PrestaShop 9 compatible release is published by the Colissimo developers.
 
-**Créé avec ❤️ par [coding974](https://coding974.com)**
+**Built with ❤️ by [coding974](https://coding974.com)**
